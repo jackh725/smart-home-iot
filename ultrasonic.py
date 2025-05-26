@@ -13,16 +13,25 @@ def get_distance():
     
     sig_pin.init(Pin.IN)
     
+    timeout= 10000000  #10s 
+    start = 0
+    end =0 
     try:
+        start_time = utime.ticks_us()
         while sig_pin.value() == 0:
-            start = utime.ticks_us()
+            if utime.ticks_diff(utime.ticks_us(), start_time)> timeout:
+                return -1
+        start = utime.ticks_us()
+        
         while sig_pin.value() == 1:
-            end = utime.ticks_us()
-            
+            if utime.ticks_diff(utime.ticks_us(), start_time)> timeout:
+                return -1
+        end = utime.ticks_us()
+        
+        duration = utime.ticks_diff(end, start)
+        distance = (duration * 0.0343)/2
+    
+        return distance
+    
     except:
         return -1
-    
-    duration = utime.ticks_diff(end, start)
-    distance = (duration * 0.0343)/2
-    
-    return distance

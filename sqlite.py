@@ -75,6 +75,7 @@ while True:
                     "alert_type": alert_type
                     })
                 mqtt_client.publish("home/jacktest",mqtt_payload)
+                print("mqtt publish is ok")
 
                 if alert_type and alert_type.lower() != "none":
                     send_alert_email(alert_type, ts, distance, light)
